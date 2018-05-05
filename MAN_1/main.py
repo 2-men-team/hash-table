@@ -31,7 +31,7 @@ def hash_division(data, m):
     return (data % m)
 
 def hash_multiplicate(data, m):
-    return int(((data*(2654435761/float(2**32))) % 1)*self.m)
+    return int(((data*(2654435761/float(2**32))) % 1)*m)
 
 def hash_linear(data, m, i):
     return (hash_division(data, m) + i) % m
@@ -40,7 +40,7 @@ def hash_qudratic(data, m, i):
     return (hash_division(data, m) + i + i**2) % m
 
 def hash_double(data, m, i):
-    return (hash_division + i*hash_multiplicate(data, m)) % m
+    return (hash_division(data, m) + i*hash_multiplicate(data, m)) % m
 
 # main
 def main(file_in, file_out, k):
