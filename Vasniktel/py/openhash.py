@@ -19,7 +19,6 @@ class OpenHash(hashbase.HashBase):
   def __getitem__(self, key):
     for i in xrange(self.size):
       index = self._hash(key, self.size, i)
-
       entry = self._table[index]
       if entry is None: break
       elif entry[0] == key: return entry[1]
