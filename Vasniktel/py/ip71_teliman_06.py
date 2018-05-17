@@ -1,6 +1,7 @@
 from sys import argv
 from chainedhash import ChainedHash
 from openhash import OpenHash
+from hashes import hashes
 
 def readData(infile):
   with open(infile) as fin:
@@ -15,7 +16,7 @@ def getResult(arr, sums, table):
 
   for el in sums:
     for num in arr:
-      if str(el - num) in table:
+      if el - num in table:
         result.append([num, el - num])
         break
     else:
@@ -30,15 +31,15 @@ if __name__ == '__main__':
 
   arr, sums = readData(infile)
 
-  if k == 1: table = ChainedHash(len(arr) * 3, lambda key, size: hash(key) % size)
-  elif k == 2: table = ChainedHash(len(arr) * 3, lambda key, size: int(( (hash(key) * (golden - 1)) % 1 ) * size))
-  elif k == 3: table = OpenHash(len(arr) * 3, lambda key, size, i: (hash(key) + i) % size)
-  elif k == 4: table = OpenHash(len(arr) * 3, lambda key, size, i: (hash(key) + i + i ** 2) % size)
-  elif k == 5: table = OpenHash(len(arr) * 3, lambda key, size, i: (hash(key) + i * (hash(key) >> 32)) % size)
+  if k == 1: table = ChainedHash(len(arr) * 3, hashes['divide'])
+  elif k == 2: table = ChainedHash(len(arr) * 3, hashes['multiply'])
+  elif k == 3: table = OpenHash(len(arr) * 3, hashes['linear'])
+  elif k == 4: table = OpenHash(len(arr) * 3, hashes['quadratic'])
+  elif k == 5: table = OpenHash(len(arr) * 3, hashes['double'])
   else: raise Exception('Unknown \'k\' argument')
 
   for num in arr:
-    table[str(num)] = num
+    table[num] = num
 
   result = getResult(arr, sums, table)
 
